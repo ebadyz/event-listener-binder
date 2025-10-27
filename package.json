@@ -1,0 +1,37 @@
+{
+  "name": "event-listener-binder",
+  "version": "0.0.1",
+  "author": "Ebad Yousefzadeh",
+  "license": "MIT",
+  "description": "A TypeScript utility for binding and unbinding event listeners",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ebadyz/event-listener-binder"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "ts:check": "tsc --noEmit",
+    "ts:build": "tsc",
+    "build": "bun run clean && bun run ts:build",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "bun run build"
+  },
+  "keywords": [
+    "event listener",
+    "event handler",
+    "typescript",
+    "utility",
+    "dom",
+    "events"
+  ],
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
