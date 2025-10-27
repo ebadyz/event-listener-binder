@@ -1,1 +1,1 @@
-
+export { bind } from "./bind";
