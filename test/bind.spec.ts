@@ -6,7 +6,7 @@ it("should bind a listener", () => {
 
   bind(button, {
     type: "click",
-    callback: onClick,
+    listener: onClick,
   });
 
   button.click();
@@ -20,7 +20,7 @@ it("should unbind a listener", () => {
 
   const unbind = bind(button, {
     type: "click",
-    callback: onClick,
+    listener: onClick,
   });
 
   button.click();
@@ -42,7 +42,7 @@ it("should respect the default event context", () => {
 
   const unbind = bind(button, {
     type: "click",
-    callback: onClick,
+    listener: onClick,
   });
 
   button.click();
@@ -57,7 +57,7 @@ it('should allow standard "this" manipulation (bind)', () => {
 
   const unbind = bind(button, {
     type: "click",
-    callback: function onClick(this: object) {
+    listener: function onClick(this: object) {
       expect(this).toBe(object);
     }.bind(object),
   });
@@ -79,7 +79,7 @@ it('should allow standard "this" manipulation (call)', () => {
 
   const unbind = bind(button, {
     type: "click",
-    callback: function onClick(this: HTMLElement, event: Event) {
+    listener: function onClick(this: HTMLElement, event: Event) {
       expect(this).toBe(button);
       otherFn.call(object, event);
     },
@@ -97,7 +97,7 @@ it('should allow standard "this" manipulation (arrow fn)', () => {
 
   const unbind = bind(button, {
     type: "click",
-    callback: () => {
+    listener: () => {
       expect(this).toBe(context);
     },
   });

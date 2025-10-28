@@ -20,20 +20,20 @@ export function bind<T extends EventTarget>(
   element: T,
   listenerOptions: {
     type: keyof HTMLElementEventMap;
-    callback: EventListenerOrEventListenerObject;
-    options?: AddEventListenerOptions | boolean;
+    listener: EventListenerOrEventListenerObject;
+    options?: AddEventListenerOptions | boolean | undefined;
   }
 ) {
   element.addEventListener(
     listenerOptions.type,
-    listenerOptions.callback,
+    listenerOptions.listener,
     listenerOptions.options
   );
 
   return function unbind() {
     element.removeEventListener(
       listenerOptions.type,
-      listenerOptions.callback,
+      listenerOptions.listener,
       listenerOptions.options
     );
   };
