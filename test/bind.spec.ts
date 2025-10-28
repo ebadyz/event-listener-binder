@@ -1,22 +1,108 @@
-import { bind } from "../src/bind";
+import { bind } from "../src";
 
-it("should bind an event listener", () => {
-  const button: HTMLButtonElement = document.createElement("button");
+it("should bind a listener", () => {
+  const button: HTMLElement = document.createElement("button");
   const onClick = jest.fn();
-  bind(button, { type: "click", callback: onClick });
+
+  bind(button, {
+    type: "click",
+    callback: onClick,
+  });
+
   button.click();
+
   expect(onClick).toHaveBeenCalledTimes(1);
 });
 
-it("should unbind an event listener", () => {
-  const button: HTMLButtonElement = document.createElement("button");
+it("should unbind a listener", () => {
+  const button: HTMLElement = document.createElement("button");
   const onClick = jest.fn();
-  const unbind = bind(button, { type: "click", callback: onClick });
+
+  const unbind = bind(button, {
+    type: "click",
+    callback: onClick,
+  });
+
   button.click();
+
   expect(onClick).toHaveBeenCalledTimes(1);
 
   onClick.mockClear();
   unbind();
   button.click();
   expect(onClick).not.toHaveBeenCalled();
+});
+
+it("should respect the default event context", () => {
+  const button: HTMLElement = document.createElement("button");
+  function onClick(this: HTMLElement, event: Event) {
+    expect(this).toBe(button);
+    expect(this).toBe(event.target);
+  }
+
+  const unbind = bind(button, {
+    type: "click",
+    callback: onClick,
+  });
+
+  button.click();
+
+  unbind();
+});
+
+it('should allow standard "this" manipulation (bind)', () => {
+  const button: HTMLElement = document.createElement("button");
+
+  const object = {};
+
+  const unbind = bind(button, {
+    type: "click",
+    callback: function onClick(this: object) {
+      expect(this).toBe(object);
+    }.bind(object),
+  });
+
+  button.click();
+
+  unbind();
+});
+
+it('should allow standard "this" manipulation (call)', () => {
+  const button: HTMLElement = document.createElement("button");
+
+  const object = {};
+
+  function otherFn(this: unknown, event: Event) {
+    expect(event).toBeDefined();
+    expect(this).toBe(object);
+  }
+
+  const unbind = bind(button, {
+    type: "click",
+    callback: function onClick(this: HTMLElement, event: Event) {
+      expect(this).toBe(button);
+      otherFn.call(object, event);
+    },
+  });
+
+  button.click();
+
+  unbind();
+});
+
+it('should allow standard "this" manipulation (arrow fn)', () => {
+  const button: HTMLElement = document.createElement("button");
+
+  const context = this;
+
+  const unbind = bind(button, {
+    type: "click",
+    callback: () => {
+      expect(this).toBe(context);
+    },
+  });
+
+  button.click();
+
+  unbind();
 });
