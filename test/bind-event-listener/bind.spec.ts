@@ -1,4 +1,4 @@
-import { bind } from "../src";
+import { bind } from "../../src";
 
 it("should bind a listener", () => {
   const button: HTMLElement = document.createElement("button");

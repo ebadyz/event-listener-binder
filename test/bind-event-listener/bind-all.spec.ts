@@ -1,4 +1,4 @@
-import { bindAll } from "../src";
+import { bindAll } from "../../src";
 
 it("should allow for multiple bindings of different types", () => {
   const button: HTMLElement = document.createElement("button");
